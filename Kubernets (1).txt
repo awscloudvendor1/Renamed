@@ -1,0 +1,73 @@
+kubectl install
+
+curl -o kubectl https://amazon-eks.s3-us-west-2.amazonaws.com/1.14.6/2019-08-22/bin/linux/amd64/kubectl
+chmod +x ./kubectl
+mkdir -p $HOME/bin
+cp ./kubectl $HOME/bin/kubectl
+export PATH=$HOME/bin:$PATH
+echo 'export PATH=$HOME/bin:$PATH' >> ~/.bashrc
+source $HOME/.bashrc
+kubectl version --short --client
+
+
+aws-iam-authenticator
+
+curl -o aws-iam-authenticator https://amazon-eks.s3-us-west-2.amazonaws.com/1.14.6/2019-08-22/bin/linux/amd64/aws-iam-authenticator
+chmod +x ./aws-iam-authenticator
+cp ./aws-iam-authenticator $HOME/bin/aws-iam-authenticator
+export PATH=$HOME/bin:$PATH
+echo 'export PATH=$HOME/bin:$PATH' >> ~/.bashrc
+source ~/.bashrc
+aws-iam-authenticator --help
+
+
+arn:aws:iam::657408108355:role/EKS-EC2
+
+amazon-eks-vpc-sample.yaml
+
+sg-0c92aecac53e3e8fc
+subnet-0f774f3bc7a42b7d7,subnet-092a23a38d35cd4da,subnet-0edc12a5d2f9e29a7
+vpc-00af1ef90971908f5	
+
+aws eks create-cluster \
+  --name eks-cluster \
+  --region us-east-1 \
+  --role-arn arn:aws:iam::657408108355:role/EKS-EC2 \
+  --resources-vpc-config subnetIds=subnet-0f774f3bc7a42b7d7,subnet-092a23a38d35cd4da,subnet-0edc12a5d2f9e29a7,securityGroupIds=sg-0c92aecac53e3e8fc
+
+
+aws eks --region us-east-1 update-kubeconfig --name eks-cluster
+
+kubectl get svc
+
+amazon-eks-nodegroup.yaml
+
+
+https://docs.aws.amazon.com/eks/latest/userguide/eks-optimized-ami.html
+
+curl -o aws-auth-cm.yaml https://amazon-eks.s3-us-west-2.amazonaws.com/cloudformation/2019-02-11/aws-auth-cm.yaml
+
+kubectl apply -f aws-auth-cm.yaml
+
+kubectl get nodes --watch
+
+kubectl run --image=nginx nginx-app --port=80
+
+kubectl get deployments
+
+kubectl expose deployment nginx-app --port=80 --name=nginx-http --type LoadBalancer
+
+kubectl get svc nginx-http
+
+http://a13dd391b2bdc463f9bf33f2984c23b2-481442321.us-east-1.elb.amazonaws.com/
+
+
+kubectl apply -f  tomcat-deployment.yaml
+
+kubectl get pods -o wide
+
+kubectl top (podname)
+
+
+
+
